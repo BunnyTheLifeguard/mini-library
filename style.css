@@ -1,0 +1,56 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  height: 90%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 2fr) 1fr 1fr;
+  grid-template-rows: 60px auto;
+}
+
+#newBook {
+  grid-column: 1;
+  margin: 15px;
+  width: 70%;
+}
+
+#title {
+  background-color: aqua;
+  grid-row: 2;
+  grid-column: 1;
+}
+
+#author {
+  background-color: orange;
+  grid-row: 2;
+  grid-column: 2;
+}
+
+#pages {
+  background-color: plum;
+  grid-row: 2;
+  grid-column: 3;
+}
+
+#read {
+  background-color: skyblue;
+  grid-row: 2;
+  grid-column: 4;  
+}
+
+#change {
+  background-color: green;
+  grid-row: 2;
+  grid-column: 5;  
+}
+
+#remove {
+  background-color: red;
+  grid-row: 2;
+  grid-column: 6;  
+}
