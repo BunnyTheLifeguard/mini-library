@@ -1,3 +1,4 @@
+//Declarations & book constructor
 const idCol = document.querySelector('#id')
 const titleCol = document.querySelector('#title')
 const authorCol = document.querySelector('#author')
@@ -31,18 +32,23 @@ function addBookToLibrary() {
     emptyId.setAttribute('id', 'emptyId')
     emptyId.textContent = 'New book:'
     idCol.prepend(emptyId)
+
     const title = document.createElement('input')
+    title.setAttribute('id', 'iTitle')
     titleCol.prepend(title)
     
     const author = document.createElement('input')
+    author.setAttribute('id', 'iAuthor')
     authorCol.prepend(author)
 
     const pages = document.createElement('input')
+    pages.setAttribute('id', 'iPages')
     pagesCol.prepend(pages)
 
-    // const read = document.createElement('input')
     const read = document.createElement('input')
+    read.setAttribute('id', 'iRead')
     readCol.prepend(read)
+
     const swap = document.createElement('button')
     swap.setAttribute('id', 'swap')
     swap.innerHTML = 'Read/Not read'
@@ -52,61 +58,49 @@ function addBookToLibrary() {
     submit.setAttribute('id', 'submit')
     submit.innerHTML = 'Submit'
     removeCol.prepend(submit)
+    submit.addEventListener('click', () => sub())
 
-    const newBook = new book(id, title, author, pages, read);
-    console.log(myLibrary.length)
-    myLibrary.push(newBook)
-    console.log(myLibrary.length)
-    // id === myLibrary.length - 1 ? console.log('New Library') : console.log('Old Library')
-    console.log(myLibrary)
+    // const newBook = new book(id, title, author, pages, read);
+    // console.log(myLibrary.length)
+    // myLibrary.push(newBook)
+    // console.log(myLibrary.length)
+    // console.log(myLibrary)
     // render()
   }
 }
 
-function render() {
-  const book = myLibrary[myLibrary.length - 1]
-  let id = document.createElement('div')
-  id.innerHTML = book.id
-  idCol.appendChild(id)
-  let title = document.createElement('div')
-  title.innerHTML = book.title
-  titleCol.appendChild(title)
-  let author = document.createElement('div')
-  author.innerHTML = book.author
-  authorCol.appendChild(author)
-  let pages = document.createElement('div')
-  pages.innerHTML = book.pages
-  pagesCol.appendChild(pages)
-  let read = document.createElement('div')
-  read.innerHTML = book.read
-  readCol.appendChild(read)
-  let change = document.createElement('button')
-  change.setAttribute('id', book.id + 's')
-  if (book.read === 'read') {
-    change.innerHTML = 'Not read'
+function swap(book) {
+  console.log(myLibrary)
+  console.log(book)
+  if(book.read === 'Read' || book.read === 'read') {
+    book.read = 'Not read'
   } else {
-    change.innerHTML = 'Read'
-  }  
-  changeCol.appendChild(change)
-  let remove = document.createElement('button')
-  remove.setAttribute('id', book.id + 'r')
-  remove.setAttribute('class', 'rmvBtns')
-  remove.innerHTML = 'Remove'
-  remove.addEventListener('click', () => removeBook(book))
-  removeCol.appendChild(remove)
+    book.read = 'Read'
+  }
+  render()
 }
 
-function swap() {
+function sub() {
+  const id = myLibrary.length
+  const title = document.querySelector('#iTitle').value
+  const author = document.querySelector('#iAuthor').value
+  const pages = document.querySelector('#iPages').value
+  const read = document.querySelector('#iRead').value
 
-  
-}
-
-function submit() {
-
+  const newBook = new book(id, title, author, pages, read);
+  myLibrary.push(newBook) 
+  render()  
 }
 
 function removeBook(book) {
-  //Clear all columns before re-rendering array
+  myLibrary = myLibrary.filter(function(element) {
+    return element.id !== book.id
+  })
+  render()
+}
+
+function render() {
+  //Clear columns before rendering
   document.querySelector('#id').innerHTML = ''
   document.querySelector('#title').innerHTML = ''
   document.querySelector('#author').innerHTML = ''
@@ -115,16 +109,50 @@ function removeBook(book) {
   document.querySelector('#change').innerHTML = ''
   document.querySelector('#remove').innerHTML = ''
 
-  myLibrary = myLibrary.filter(function(element) {
-    return element.id !== book.id
-  })
-  render()
+  for(let book of myLibrary){
+    let id = document.createElement('div')
+    id.innerHTML = book.id
+    idCol.appendChild(id)
+  
+    let title = document.createElement('div')
+    title.innerHTML = book.title
+    titleCol.appendChild(title)
+  
+    let author = document.createElement('div')
+    author.innerHTML = book.author
+    authorCol.appendChild(author)
+  
+    let pages = document.createElement('div')
+    pages.innerHTML = book.pages
+    pagesCol.appendChild(pages)
+  
+    let read = document.createElement('div')
+    read.innerHTML = book.read
+    readCol.appendChild(read)
+  
+    let change = document.createElement('button')
+    change.setAttribute('id', book.id + 's')
+    change.addEventListener('click', () => swap(book))
+    if (book.read === 'Read' || book.read === 'read') {
+      change.innerHTML = 'Not read'
+    } else {
+      change.innerHTML = 'Read'
+    }  
+    changeCol.appendChild(change)
+  
+    let remove = document.createElement('button')
+    remove.setAttribute('id', book.id + 'r')
+    remove.setAttribute('class', 'rmvBtns')
+    remove.innerHTML = 'Remove'
+    remove.addEventListener('click', () => removeBook(book))
+    removeCol.appendChild(remove)
+  }
+  console.log(myLibrary)
 }
 
 const theHobbit = new book(0, 'The Hobbit', 'J.R.R. Tolkien', 295, 'not read')
 myLibrary.push(theHobbit)
 render()
-const Deal = new book(1, 'The Liberal Media Industrial Complex', 'Mark Dice', 182, 'read')
-myLibrary.push(Deal)
+const LMIC = new book(1, 'The Liberal Media Industrial Complex', 'Mark Dice', 182, 'read')
+myLibrary.push(LMIC)
 render()
-console.log(myLibrary)
