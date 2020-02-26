@@ -8,7 +8,7 @@ const changeCol = document.querySelector('#change')
 const removeCol = document.querySelector('#remove')
 
 const newBook = document.querySelector('#newBook')
-newBook.addEventListener('click', () => addBookToLibrary())
+newBook.addEventListener('click', () => addInputFields())
 
 let myLibrary = [];
 
@@ -23,11 +23,10 @@ function book(id, title, author, pages, read) {
   }
 }
 
-function addBookToLibrary() {
+//Main functionality
+function addInputFields() {
   if(removeCol.contains(document.querySelector('#submit'))) {
-    alert('One book at a time!')
   } else {
-    const id = myLibrary.length
     const emptyId = document.createElement('div')
     emptyId.setAttribute('id', 'emptyId')
     emptyId.textContent = 'New book:'
@@ -50,29 +49,19 @@ function addBookToLibrary() {
     readCol.prepend(read)
 
     const swap = document.createElement('button')
-    swap.setAttribute('id', 'swap')
-    swap.innerHTML = 'Read/Not read'
+    swap.innerHTML = 'Add =>'
     changeCol.prepend(swap)
 
     const submit = document.createElement('button')
     submit.setAttribute('id', 'submit')
     submit.innerHTML = 'Submit'
     removeCol.prepend(submit)
-    submit.addEventListener('click', () => sub())
-
-    // const newBook = new book(id, title, author, pages, read);
-    // console.log(myLibrary.length)
-    // myLibrary.push(newBook)
-    // console.log(myLibrary.length)
-    // console.log(myLibrary)
-    // render()
+    submit.addEventListener('click', () => addBook())
   }
 }
 
-function swap(book) {
-  console.log(myLibrary)
-  console.log(book)
-  if(book.read === 'Read' || book.read === 'read') {
+function swapReadStatus(book) {
+  if(book.read === 'Read') {
     book.read = 'Not read'
   } else {
     book.read = 'Read'
@@ -80,16 +69,36 @@ function swap(book) {
   render()
 }
 
-function sub() {
+function addBook() {
   const id = myLibrary.length
   const title = document.querySelector('#iTitle').value
   const author = document.querySelector('#iAuthor').value
   const pages = document.querySelector('#iPages').value
-  const read = document.querySelector('#iRead').value
+  const read = capitalizeFirstLetter(document.querySelector('#iRead').value)
 
-  const newBook = new book(id, title, author, pages, read);
-  myLibrary.push(newBook) 
-  render()  
+  if(title === '') {
+    alert('No title given.')
+    addInputFields()
+  } else if(author === '') {
+    alert('No author given.')
+    addInputFields()
+  } else if(pages === '') {
+    alert('No number of pages given.')
+    addInputFields()
+  } else if(isNaN(pages)) {
+    alert('Number of pages is not a valid number.')
+    addInputFields()
+  } else if(read === '') {
+    alert('No "read/not read" for given.')
+    addInputFields()
+  } else if (read !== 'Read' && read !== 'Not read') {
+    alert('Either enter "Read" or "Not read".')
+    addInputFields()
+  } else {
+    const newBook = new book(id, title, author, pages, read);
+    myLibrary.push(newBook) 
+    render()
+  }  
 }
 
 function removeBook(book) {
@@ -97,6 +106,10 @@ function removeBook(book) {
     return element.id !== book.id
   })
   render()
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 }
 
 function render() {
@@ -131,8 +144,7 @@ function render() {
     readCol.appendChild(read)
   
     let change = document.createElement('button')
-    change.setAttribute('id', book.id + 's')
-    change.addEventListener('click', () => swap(book))
+    change.addEventListener('click', () => swapReadStatus(book))
     if (book.read === 'Read' || book.read === 'read') {
       change.innerHTML = 'Not read'
     } else {
@@ -141,18 +153,16 @@ function render() {
     changeCol.appendChild(change)
   
     let remove = document.createElement('button')
-    remove.setAttribute('id', book.id + 'r')
     remove.setAttribute('class', 'rmvBtns')
     remove.innerHTML = 'Remove'
     remove.addEventListener('click', () => removeBook(book))
     removeCol.appendChild(remove)
   }
-  console.log(myLibrary)
 }
 
-const theHobbit = new book(0, 'The Hobbit', 'J.R.R. Tolkien', 295, 'not read')
+const theHobbit = new book(0, 'The Hobbit', 'J.R.R. Tolkien', 295, 'Not read')
 myLibrary.push(theHobbit)
 render()
-const LMIC = new book(1, 'The Liberal Media Industrial Complex', 'Mark Dice', 182, 'read')
+const LMIC = new book(1, 'The Liberal Media Industrial Complex', 'Mark Dice', 182, 'Read')
 myLibrary.push(LMIC)
 render()
