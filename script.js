@@ -41,7 +41,7 @@ function addBookToLibrary() {
     pagesCol.prepend(pages)
 
     // const read = document.createElement('input')
-    const read = 'not read'
+    const read = document.createElement('input')
     readCol.prepend(read)
     const swap = document.createElement('button')
     swap.setAttribute('id', 'swap')
@@ -81,6 +81,7 @@ function render() {
   read.innerHTML = book.read
   readCol.appendChild(read)
   let change = document.createElement('button')
+  change.setAttribute('id', book.id + 's')
   if (book.read === 'read') {
     change.innerHTML = 'Not read'
   } else {
@@ -88,11 +89,15 @@ function render() {
   }  
   changeCol.appendChild(change)
   let remove = document.createElement('button')
+  remove.setAttribute('id', book.id + 'r')
+  remove.setAttribute('class', 'rmvBtns')
   remove.innerHTML = 'Remove'
+  remove.addEventListener('click', () => removeBook(book))
   removeCol.appendChild(remove)
 }
 
 function swap() {
+
   
 }
 
@@ -100,8 +105,20 @@ function submit() {
 
 }
 
-function remove() {
+function removeBook(book) {
+  //Clear all columns before re-rendering array
+  document.querySelector('#id').innerHTML = ''
+  document.querySelector('#title').innerHTML = ''
+  document.querySelector('#author').innerHTML = ''
+  document.querySelector('#pages').innerHTML = ''
+  document.querySelector('#read').innerHTML = ''
+  document.querySelector('#change').innerHTML = ''
+  document.querySelector('#remove').innerHTML = ''
 
+  myLibrary = myLibrary.filter(function(element) {
+    return element.id !== book.id
+  })
+  render()
 }
 
 const theHobbit = new book(0, 'The Hobbit', 'J.R.R. Tolkien', 295, 'not read')

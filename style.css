@@ -61,3 +61,13 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.rmvBtns {
+  background-color: red;
+  color: white;
+}
+
+#submit {
+  background-color: green;
+  color: white;
+}
