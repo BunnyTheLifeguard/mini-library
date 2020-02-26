@@ -23,20 +23,48 @@ function book(id, title, author, pages, read) {
 }
 
 function addBookToLibrary() {
-  const id = myLibrary.length + 1
-  const title = prompt('Enter the book title:')
-  const author = prompt('Enter the author:')
-  const pages = parseInt(prompt('Enter the number of pages:'))
-  const read = prompt('Enter read/not read:')
+  if(removeCol.contains(document.querySelector('#submit'))) {
+    alert('One book at a time!')
+  } else {
+    const id = myLibrary.length
+    const emptyId = document.createElement('div')
+    emptyId.setAttribute('id', 'emptyId')
+    emptyId.textContent = 'New book:'
+    idCol.prepend(emptyId)
+    const title = document.createElement('input')
+    titleCol.prepend(title)
+    
+    const author = document.createElement('input')
+    authorCol.prepend(author)
 
-  const newBook = new book(id, title, author, pages, read);
-  myLibrary.push(newBook)
-  console.log(myLibrary)
-  render()
+    const pages = document.createElement('input')
+    pagesCol.prepend(pages)
+
+    // const read = document.createElement('input')
+    const read = 'not read'
+    readCol.prepend(read)
+    const swap = document.createElement('button')
+    swap.setAttribute('id', 'swap')
+    swap.innerHTML = 'Read/Not read'
+    changeCol.prepend(swap)
+
+    const submit = document.createElement('button')
+    submit.setAttribute('id', 'submit')
+    submit.innerHTML = 'Submit'
+    removeCol.prepend(submit)
+
+    const newBook = new book(id, title, author, pages, read);
+    console.log(myLibrary.length)
+    myLibrary.push(newBook)
+    console.log(myLibrary.length)
+    // id === myLibrary.length - 1 ? console.log('New Library') : console.log('Old Library')
+    console.log(myLibrary)
+    // render()
+  }
 }
 
 function render() {
-  let book = myLibrary[myLibrary.length - 1]
+  const book = myLibrary[myLibrary.length - 1]
   let id = document.createElement('div')
   id.innerHTML = book.id
   idCol.appendChild(id)
@@ -52,15 +80,34 @@ function render() {
   let read = document.createElement('div')
   read.innerHTML = book.read
   readCol.appendChild(read)
-  let change = document.createElement('input')
-  change.type = 'checkbox'
+  let change = document.createElement('button')
+  if (book.read === 'read') {
+    change.innerHTML = 'Not read'
+  } else {
+    change.innerHTML = 'Read'
+  }  
   changeCol.appendChild(change)
   let remove = document.createElement('button')
   remove.innerHTML = 'Remove'
   removeCol.appendChild(remove)
 }
 
-// const theHobbit = new book('The Hobbit', 'Tolkien', 295, 'not read')
+function swap() {
+  
+}
 
-// console.log(theHobbit.info());
+function submit() {
 
+}
+
+function remove() {
+
+}
+
+const theHobbit = new book(0, 'The Hobbit', 'J.R.R. Tolkien', 295, 'not read')
+myLibrary.push(theHobbit)
+render()
+const Deal = new book(1, 'The Liberal Media Industrial Complex', 'Mark Dice', 182, 'read')
+myLibrary.push(Deal)
+render()
+console.log(myLibrary)
