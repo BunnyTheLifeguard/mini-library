@@ -49,8 +49,19 @@ function addInputFields() {
     readCol.prepend(read)
 
     const swap = document.createElement('button')
-    swap.innerHTML = 'Add =>'
+    swap.setAttribute('id', 'swap')
+    swap.innerHTML = 'Read/Not read'
     changeCol.prepend(swap)
+
+    swap.addEventListener('click', () => {
+      if(read.value === '' || read.value.toLowerCase() === 'not read') {
+        read.value = 'Read'
+        swap.innerHTML = 'Not read'
+      } else {
+        read.value = 'Not read'
+        swap.innerHTML = 'Read'
+      }
+    })
 
     const submit = document.createElement('button')
     submit.setAttribute('id', 'submit')
