@@ -42,6 +42,7 @@ function addInputFields() {
 
     const pages = document.createElement('input')
     pages.setAttribute('id', 'iPages')
+    pages.type = 'number'
     pagesCol.prepend(pages)
 
     const read = document.createElement('input')
